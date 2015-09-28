@@ -1,14 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Noter.BL
+namespace Noter.Core.BL
 {
-	public class Page
+	public class Page : BaseEntity
 	{
-		public string Title { get; set; }
-				
-		public bool showLabel { get; set; }
-		
-		public List<Line> lines { get; set; }
 	}
 }

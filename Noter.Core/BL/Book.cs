@@ -1,14 +1,31 @@
 using System;
 using System.Collections.Generic;
 
-namespace Noter.BL
+namespace Noter.Core.BL
 {
-	public class Book
+	public class Book : BaseEntity
 	{
-		public string Title { get; set; }
-				
-		public bool showLabel { get; set; }
-		
 		public List<Page> pages { get; set; }
+		
+		// Methods
+		public void getPages()
+		{
+			
+		}
+		
+		public void addPage(Page page)
+		{
+			
+		}
+		
+		public void removePage(Page page)
+		{
+			
+		}
+		
+		public void changePageOrder(Page page, int position)
+		{
+			
+		}
 	}
 }
