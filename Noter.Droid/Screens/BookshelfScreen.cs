@@ -2,11 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Noter.BL;
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Widget;
+using Android.Views;
 
-namespace Noter
+namespace Noter.Droid.Screens
 {
-	public class Bookshelf_Edit
+	[Activity (Label = "Tasky Pro", MainLauncher = true)]
+	public class BookshelfScreen : Activity
 	{
+		
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.Oncreate(bundle);
+			
+			// Enable the ActionBar
+			RequestWindowFeature(WindowFeatures.ActionBar);
+			
+			// Call ActionBar helper class
+			ActionBarHelper.CreateAndAddActionBarTabs();
+			
+			// Set our view from the "main" layout resource
+			SetContentView (Resource.Layout.Main);
+		}
+		
+		protected override void OnResume()
+		{
+			
+		}
+	}
+}
+		
+		
+		
 		public static void AddButtonClicked()
 		{
 			// Launch new view for filling out new shelf details
