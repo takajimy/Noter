@@ -13,7 +13,7 @@ using Android.Support.V4.Widget;
 using Android.Support.Design.Widget;
 using System.Collections.Generic;
 
-namespace Noter.Droid
+namespace Noter.Droid.Activities
 {
 	public class BaseActivity : AppCompatActivity
 	{
@@ -27,10 +27,15 @@ namespace Noter.Droid
 			base.OnCreate(bundle);
 			SetContentView(Resource.Layout.Main);
 			
-			// By default, set everything up
+			// Setup UI components
 			setupToolbar();
 			setupDrawerLayout();
 			setupNavigationView();
+		}
+		
+		protected override void OnResume()
+		{
+			
 		}
 		
 		protected void setupToolbar()
@@ -56,11 +61,6 @@ namespace Noter.Droid
 					drawerLayout.CloseDrawers ();
 				};
 			}
-		}
-		
-		protected override void OnResume()
-		{
-			
 		}
 	}
 }

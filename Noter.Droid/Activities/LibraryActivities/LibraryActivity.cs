@@ -15,12 +15,11 @@ using System.Collections.Generic;
 
 namespace Noter.Droid.Activities.LibraryActivities
 {
-	[Activity(Label = "Noter", MainLauncher = true)]
-	public class BookshelfActivity : BaseActivity
+	[Activity (Label = "Noter", MainLauncher = true)]
+	public class LibraryActivity : BaseActivity
 	{
 		ViewPager viewPager;
 		TabLayout tabLayout;
-		FloatingActionButton addButton;
 		
 		protected override void OnCreate(Bundle bundle)
 		{
@@ -34,7 +33,6 @@ namespace Noter.Droid.Activities.LibraryActivities
 			setupNavigationView();
 			setupViewPager();
 			setupTabLayout();
-			setupFloatingActionButton();
 		}
 		
 		protected override void OnResume()
@@ -47,9 +45,9 @@ namespace Noter.Droid.Activities.LibraryActivities
 			viewPager = FindViewById<Android.Support.V4.View.ViewPager>(Resource.Id.viewpager);
 			if (viewPager != null)
 			{
-				var adapter = new Adapter(SupportFragmentManager);
-				adapter.AddFragment(new BookshelfViewFragment(), "View");
-				adapter.AddFragment(new BookshelfEditFragment(), "Edit");
+				var adapter = new Adapter (SupportFragmentManager);
+				adapter.AddFragment (new CustomFragment(), "View");
+				adapter.AddFragment (new CustomFragment(), "Edit");
 				viewPager.Adapter = adapter;
 			}
 		}
@@ -58,17 +56,6 @@ namespace Noter.Droid.Activities.LibraryActivities
 		{
 			tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);
 			tabLayout.SetupWithViewPager(viewPager);
-		}
-		
-		protected void setupFloatingActionButton()
-		{
-			addButton = FindViewById<FloatingActionButton>(Resource.Id.fab);
-			addButton.Click += (sender, e) => {
-                Snackbar.Make (addButton, "Here's a snackbar!", Snackbar.LengthLong).SetAction("Action",
-                    new ClickListener(v => {
-                        Console.WriteLine("Action handler");
-                    })).Show ();
-            };
 		}
 	}
 }
