@@ -18,57 +18,60 @@ namespace Noter.Droid.Activities.LibraryActivities
 	[Activity(Label = "Noter", MainLauncher = true)]
 	public class BookshelfActivity : BaseActivity
 	{
-		ViewPager viewPager;
-		TabLayout tabLayout;
-		FloatingActionButton addButton;
-		
 		protected override void OnCreate(Bundle bundle)
 		{
-			// Load any previous state of this activity and set view from main layout resource
 			base.Oncreate(bundle);
 			SetContentView(Resource.Layout.Main);
+
+			// Toolbar
+			var toolbar = FindViewById<V7Toolbar>(Resource.Id.toolbar);
+			setupToolbar(toolbar);
 			
-			// Setup UI components
-			setupToolbar();
-			setupDrawerLayout();
-			setupNavigationView();
-			setupViewPager();
-			setupTabLayout();
+			// NavigationView and DrawerLayout
+			var navigationView = FindViewById<NavigationView> (Resource.Id.nav_view);
+			setupNavigationView(navigationView);
+			
+			// ViewPager and TabLayout
+			var adapter = new Adapter(SupportFragmentManager);
+			adapter.AddFragment(new BookshelfViewFragment(), "View");
+			adapter.AddFragment(new BookshelfEditFragment(), "Edit");
+			setupTabLayout(adapter);
+			
+			// FAB
 			setupFloatingActionButton();
 		}
 		
-		protected override void OnResume()
-		{
-			
-		}
+		public override bool OnCreateOptionsMenu (IMenu menu) 
+        {
+            MenuInflater.Inflate(Resource.Menu.sample_actions, menu);
+            return true;
+        }
+            
+        public override bool OnOptionsItemSelected (IMenuItem item) 
+        {
+            switch (item.ItemId) {
+            case Android.Resource.Id.Home:
+                drawerLayout.OpenDrawer (Android.Support.V4.View.GravityCompat.Start);
+                return true;
+            }
+            return base.OnOptionsItemSelected (item);
+        }
 		
-		protected void setupViewPager()
+		public class ClickListener : Java.Lang.Object, View.IOnClickListener
 		{
-			viewPager = FindViewById<Android.Support.V4.View.ViewPager>(Resource.Id.viewpager);
-			if (viewPager != null)
+			public ClickListener (Action<View> handler)
 			{
-				var adapter = new Adapter(SupportFragmentManager);
-				adapter.AddFragment(new BookshelfViewFragment(), "View");
-				adapter.AddFragment(new BookshelfEditFragment(), "Edit");
-				viewPager.Adapter = adapter;
+				Handler = handler;
 			}
-		}
-		
-		protected void setupTabLayout()
-		{
-			tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);
-			tabLayout.SetupWithViewPager(viewPager);
-		}
-		
-		protected void setupFloatingActionButton()
-		{
-			addButton = FindViewById<FloatingActionButton>(Resource.Id.fab);
-			addButton.Click += (sender, e) => {
-                Snackbar.Make (addButton, "Here's a snackbar!", Snackbar.LengthLong).SetAction("Action",
-                    new ClickListener(v => {
-                        Console.WriteLine("Action handler");
-                    })).Show ();
-            };
+
+			public Action<View> Handler { get; set; }
+
+			public void OnClick (View v)
+			{
+				var h = Handler;
+				if (h != null)
+					h (v);
+			}
 		}
 	}
 }

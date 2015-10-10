@@ -15,45 +15,20 @@ using System.Collections.Generic;
 
 namespace Noter.Droid.Activities
 {
-	public class BaseActivity : AppCompatActivity
+	abstract class BaseActivity : AppCompatActivity
 	{
-		V7Toolbar toolbar;
 		DrawerLayout drawerLayout;
-		NavigationView navigationView;
-		
-		protected override void OnCreate(Bundle bundle)
+
+		protected void setupToolbar(Toolbar toolbar)
 		{
-			// Load any previous state of this activity and set view from main layout resource
-			base.OnCreate(bundle);
-			SetContentView(Resource.Layout.Main);
-			
-			// Setup UI components
-			setupToolbar();
-			setupDrawerLayout();
-			setupNavigationView();
-		}
-		
-		protected override void OnResume()
-		{
-			
-		}
-		
-		protected void setupToolbar()
-		{
-			toolbar = FindViewById<V7Toolbar>(Resource.Id.toolbar);
 			SetSupportActionBar (toolbar);
             SupportActionBar.SetHomeAsUpIndicator (Resource.Drawable.ic_menu);
             SupportActionBar.SetDisplayHomeAsUpEnabled (true);
 		}
 		
-		protected void setupDrawerLayout()
+		protected void setupNavigationView(NavigationView navigationView)
 		{
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-		}
-		
-		protected void setupNavigationView()
-		{
-			navigationView = FindViewById<NavigationView> (Resource.Id.nav_view);
 			if (navigationView != null)
 			{
 				navigationView.NavigationItemSelected += (sender, e) => {
@@ -62,5 +37,59 @@ namespace Noter.Droid.Activities
 				};
 			}
 		}
+		
+		protected void setupTabLayout(Adapter adapter)
+		{
+			var viewPager = FindViewById<Android.Support.V4.View.ViewPager>(Resource.Id.viewpager);
+			if (viewPager != null)
+			{
+				viewPager.Adapter = adapter;
+			}
+			
+			tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);
+			tabLayout.SetupWithViewPager(viewPager);
+		}
+		
+		protected void setupFloatingActionButton()
+		{
+			addButton = FindViewById<FloatingActionButton>(Resource.Id.fab);
+			addButton.Click += (sender, e) => {
+                Snackbar.Make (addButton, "Here's a snackbar!", Snackbar.LengthLong).SetAction("Action",
+                    new ClickListener(v => {
+                        Console.WriteLine("Action handler");
+                    })).Show ();
+            };
+		}
+		
+		class Adapter : Android.Support.V4.App.FragmentPagerAdapter 
+        {
+            List<V4Fragment> fragments = new List<V4Fragment> ();
+            List<string> fragmentTitles = new List<string> ();
+
+            public Adapter (V4FragmentManager fm) : base (fm)
+            {
+            }
+
+            public void AddFragment (V4Fragment fragment, String title) 
+            {
+                fragments.Add(fragment);
+                fragmentTitles.Add(title);
+            }
+                
+            public override V4Fragment GetItem(int position) 
+            {
+                return fragments [position];
+            }
+
+            public override int Count {
+                get { return fragments.Count; }
+            }
+
+            public override Java.Lang.ICharSequence GetPageTitleFormatted (int position)
+            {
+                return new Java.Lang.String (fragmentTitles [position]);
+            }
+
+        }
 	}
 }

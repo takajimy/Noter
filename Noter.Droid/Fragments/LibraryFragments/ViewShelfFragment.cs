@@ -15,20 +15,12 @@ using System.Collections.Generic;
 
 namespace Noter.Droid
 {
-	public class NoterToolbar
+	public class ViewShelfFragment : BaseFragment
 	{
-		public var toolbar;
-		
-		public NoterToolbar()
-		{
-			toolbar = FindViewById<V7Toolbar>(Resource.Id.toolbar);
-		}
-		
-		public void setup()
-		{
-			SetSupportActionBar(toolbar);
-			SupportActionBar.SetHomeAsUpIndicator (Resource.Drawable.ic_menu);
-            SupportActionBar.SetDisplayHomeAsUpEnabled (true);
-		}
+        protected void setupAdapter() 
+        {
+			adapter = new ShelfAdapter();
+			recyclerView.SetAdapter(adapter);
+        }
 	}
 }
