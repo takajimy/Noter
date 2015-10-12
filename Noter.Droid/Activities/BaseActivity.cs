@@ -38,12 +38,12 @@ namespace Noter.Droid.Activities
 			}
 		}
 		
-		protected void setupTabLayout(Adapter adapter)
+		protected void setupTabLayout(FragmentAdapter fragmentAdapter)
 		{
 			var viewPager = FindViewById<Android.Support.V4.View.ViewPager>(Resource.Id.viewpager);
 			if (viewPager != null)
 			{
-				viewPager.Adapter = adapter;
+				viewPager.Adapter = fragmentAdapter;
 			}
 			
 			tabLayout = FindViewById<TabLayout>(Resource.Id.tabs);
@@ -61,35 +61,6 @@ namespace Noter.Droid.Activities
             };
 		}
 		
-		class Adapter : Android.Support.V4.App.FragmentPagerAdapter 
-        {
-            List<V4Fragment> fragments = new List<V4Fragment> ();
-            List<string> fragmentTitles = new List<string> ();
-
-            public Adapter (V4FragmentManager fm) : base (fm)
-            {
-            }
-
-            public void AddFragment (V4Fragment fragment, String title) 
-            {
-                fragments.Add(fragment);
-                fragmentTitles.Add(title);
-            }
-                
-            public override V4Fragment GetItem(int position) 
-            {
-                return fragments [position];
-            }
-
-            public override int Count {
-                get { return fragments.Count; }
-            }
-
-            public override Java.Lang.ICharSequence GetPageTitleFormatted (int position)
-            {
-                return new Java.Lang.String (fragmentTitles [position]);
-            }
-
-        }
+		
 	}
 }

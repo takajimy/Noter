@@ -32,10 +32,10 @@ namespace Noter.Droid.Activities.LibraryActivities
 			setupNavigationView(navigationView);
 			
 			// ViewPager and TabLayout
-			var adapter = new Adapter(SupportFragmentManager);
-			adapter.AddFragment(new BookshelfViewFragment(), "View");
-			adapter.AddFragment(new BookshelfEditFragment(), "Edit");
-			setupTabLayout(adapter);
+			var fragmentAdapter = new FragmentAdapter(SupportFragmentManager);
+			fragmentAdapter.AddFragment(new BookshelfViewFragment(), "View");
+			fragmentAdapter.AddFragment(new BookshelfEditFragment(), "Edit");
+			setupTabLayout(fragmentAdapter);
 			
 			// FAB
 			setupFloatingActionButton();
